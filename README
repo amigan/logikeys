@@ -1,0 +1,5 @@
+This is logikeys, a program that listens for scancodes and behaves according to a configuration file.
+See logikeysrc for how it is configured.
+I build with (on FreeBSD):
+
+cc -L/usr/X11R6/lib -I/usr/X11R6/include -ggdb -lX11 -o logikeys logikeys.c

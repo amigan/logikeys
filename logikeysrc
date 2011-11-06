@@ -1,0 +1,28 @@
+# example configuration
+# for the logitech "corded keyboard"
+# requires xmms-pipe be running to run (might fix in a later version)
+# general format of lines is
+# scancode:action
+# If action starts with '|' it is in the format of
+# |/pipe/filename|text to write
+# If action starts with '=' it means "use the same pipe handle as scancode X"
+# In all other cases, action is just a command (" &" will be appended to run in the background)
+
+# next key
+153:|/home/dcp1990/.xmms/inpipe|playlist next
+# prev key
+144:=153|playlist prev
+# stop key
+164:=153|stop
+# mute key
+160:=153|mute
+# play/pause key
+162:=153|play_pause
+# volume up
+176:=153|add_volume 8
+# volume down
+174:=153|add_volume -8
+# calculator key
+161:xcalc
+# home key
+178:opera http://www.yahoo.com/
