@@ -14,9 +14,11 @@
 #include <sys/uio.h>
 #include <signal.h>
 #include <X11/Xlib.h>
+#include <bsd/string.h>
 
 #define EV_CMD	0x1
 #define EV_WRITE	0x2
+#define CONFIG_PATH	"/.logikeysrc"
 
 Display *d;
 Window r;
@@ -294,12 +296,28 @@ int main(argc, argv)
 	argv += optind;
 
 	if(argc != 1) {
-		fprintf(stderr, "%s: must specify config file!\n", pn);
-		usage(pn);
-		exit(-1);
-	}
+		char *home;
+		char *fullpath;
+		size_t pathlen;
 
-	read_config_file(*argv, &head, &last);
+		if(!(home = getenv("HOME"))) {
+			fprintf(stderr, "cannot get $HOME!\n");
+			exit(-1);
+		}
+
+		pathlen = (strlen(home) + sizeof(CONFIG_PATH) + 2) * sizeof(char);
+		if(!(fullpath = malloc(pathlen))) {
+			perror("malloc");
+			exit(-1);
+		}
+
+		strlcpy(fullpath, home, pathlen);
+		strlcat(fullpath, CONFIG_PATH, pathlen);
+		read_config_file(fullpath, &head, &last);
+		free(fullpath);
+	} else {
+		read_config_file(*argv, &head, &last);
+	}
 	
 	init_x();
 	get_keys(head);
